@@ -8,6 +8,10 @@ import {
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @ApiTags('Products')
 @Controller('products')
@@ -17,6 +21,8 @@ export class ProductsController {
   ) {}
 
   @ApiOperation({ summary: 'Crear un nuevo producto' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
   @Post()
   create(@Body() data: CreateProductDto) {
     return this.productsService.create(data);
