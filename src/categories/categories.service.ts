@@ -20,4 +20,10 @@ export class CategoriesService {
       where: { id },
     });
   }
+
+  remove(id: number) {
+    return this.prisma.category.delete({
+      where: { id },
+    });
+  } 
 }
