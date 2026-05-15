@@ -22,6 +22,12 @@ async register(data: any) {
     },
   });
 
+  await this.prisma.cart.create({
+    data: {
+      userId: user.id,
+    },
+  });
+
   const { password, ...userWithoutPassword } = user;
 
   return {

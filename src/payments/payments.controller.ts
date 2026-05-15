@@ -1,12 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
-
 import { PaymentsService } from './payments.service';
-import { CreatePaymentDto } from './dto/create-payment.dto';
-import {
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Payments')
 @Controller('payments')
@@ -15,10 +9,21 @@ export class PaymentsController {
     private readonly paymentsService: PaymentsService,
   ) {}
 
-  @ApiOperation({ summary: 'Crear preferencia de pago Mercado Pago' })
-  @ApiResponse({ status: 201, description: 'Preferencia creada correctamente' })
-  @Post('create-preference')
-  createPreference(@Body() data: CreatePaymentDto) {
-    return this.paymentsService.createPreference(data);
+  @ApiOperation({ summary: 'Crear pago desde una orden' })
+  @ApiResponse({ status: 201, description: 'Pago creado correctamente' })
+  @Post('create')
+  createPayment(@Body() body: { orderId: number }) {
+    return this.paymentsService.createPayment(body.orderId);
+  }
+
+  @Post('webhook')
+  webhook(@Body() body: any) {
+    const paymentId = body?.data?.id;
+
+    if (!paymentId) {
+      return { received: true };
+    }
+
+    return this.paymentsService.handleWebhook(paymentId);
   }
 }

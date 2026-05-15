@@ -12,22 +12,14 @@ export class OrdersService {
 
   async checkout(userId: number) {
     const cart = await this.prisma.cart.findUnique({
-      where: {
-        userId,
-      },
+      where: { userId },
       include: {
-        items: {
-          include: {
-            product: true,
-          },
-        },
+        items: { include: { product: true } },
       },
     });
 
     if (!cart || cart.items.length === 0) {
-      throw new BadRequestException(
-        'El carrito está vacío',
-      );
+      throw new BadRequestException('El carrito está vacío');
     }
 
     let total = 0;
@@ -47,40 +39,51 @@ export class OrdersService {
         userId,
         total,
         status: 'PENDING',
-      },
-    });
-
-    for (const item of cart.items) {
-      await this.prisma.orderItem.create({
-        data: {
-          orderId: order.id,
-          productId: item.productId,
-          quantity: item.quantity,
-          price: item.product.price,
+        items: {
+          create: cart.items.map(item => ({
+            productId: item.productId,
+            quantity: item.quantity,
+            price: item.product.price,
+          })),
         },
-      });
-
-      await this.prisma.product.update({
-        where: {
-          id: item.productId,
-        },
-        data: {
-          stock: item.product.stock - item.quantity,
-        },
-      });
-    }
-
-    await this.prisma.cartItem.deleteMany({
-      where: {
-        cartId: cart.id,
       },
     });
 
     return {
-      message: 'Compra realizada correctamente',
       orderId: order.id,
       total,
     };
+  }
+
+  async confirmPayment(orderId: number) {
+    const order = await this.prisma.order.findUnique({
+      where: { id: orderId },
+      include: { items: true },
+    });
+
+    if (!order) {
+      throw new NotFoundException('Orden no encontrada');
+    }
+
+    // actualizar stock
+    for (const item of order.items) {
+      const product = await this.prisma.product.findUnique({
+        where: { id: item.productId },
+      });
+
+      await this.prisma.product.update({
+        where: { id: item.productId },
+        data: {
+          stock: product.stock - item.quantity,
+        },
+      });
+    }
+
+    // marcar orden como pagada
+    return this.prisma.order.update({
+      where: { id: orderId },
+      data: { status: 'PAID' },
+    });
   }
 
   async findOrdersByUser(userId: number) {

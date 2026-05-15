@@ -1,14 +1,15 @@
 import {
-  Body,
   Controller,
   Get,
   Param,
   Post,
+  Req,
+  UseGuards
 } from '@nestjs/common';
 
 import { OrdersService } from './orders.service';
-import { CreateOrderDto } from './dto/create-order.dto';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -17,10 +18,11 @@ export class OrdersController {
     private readonly ordersService: OrdersService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Realizar checkout' })
   @Post('checkout')
-  checkout(@Body() data: CreateOrderDto) {
-    return this.ordersService.checkout(data.userId);
+  checkout(@Req() req) {
+    return this.ordersService.checkout(req.user.userId);
   }
 
   @ApiOperation({ summary: 'Obtener órdenes por usuario' })
