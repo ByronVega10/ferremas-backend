@@ -10,9 +10,25 @@ import { OrdersModule } from './orders/orders.module';
 import { PaymentsModule } from './payments/payments.module';
 import { ExchangeModule } from './exchange/exchange.module';
 import { UsersModule } from './users/users.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [PrismaModule, AuthModule, CategoriesModule, ProductsModule, CartModule, OrdersModule, PaymentsModule, ExchangeModule, UsersModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+  }),
+  
+    PrismaModule, 
+    AuthModule, 
+    CategoriesModule, 
+    ProductsModule, 
+    CartModule, 
+    OrdersModule, 
+    PaymentsModule, 
+    ExchangeModule, 
+    UsersModule
+  ],
+  
   controllers: [AppController],
   providers: [AppService],
 })

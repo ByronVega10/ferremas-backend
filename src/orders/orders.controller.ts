@@ -25,17 +25,25 @@ export class OrdersController {
     return this.ordersService.checkout(req.user.userId);
   }
 
-  @ApiOperation({ summary: 'Obtener órdenes por usuario' })
-  @Get('user/:userId')
-  findByUser(@Param('userId') userId: string) {
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Obtener mis órdenes' })
+  @Get('my-orders')
+  findMyOrders(@Req() req) {
     return this.ordersService.findOrdersByUser(
-      Number(userId),
+      req.user.userId,
     );
   }
 
-  @ApiOperation({ summary: 'Obtener detalles de una orden' })
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Obtener detalles de mi orden' })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ordersService.findOne(Number(id));
+  findOne(
+    @Param('id') id: string,
+    @Req() req,
+  ) {
+    return this.ordersService.findOne(
+      Number(id),
+      req.user.userId,
+    );
   }
 }

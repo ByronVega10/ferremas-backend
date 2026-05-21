@@ -1,6 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CreatePaymentDto } from './dto/create-payment.dto';
 
 @ApiTags('Payments')
 @Controller('payments')
@@ -12,7 +13,7 @@ export class PaymentsController {
   @ApiOperation({ summary: 'Crear pago desde una orden' })
   @ApiResponse({ status: 201, description: 'Pago creado correctamente' })
   @Post('create')
-  createPayment(@Body() body: { orderId: number }) {
+  createPayment(@Body() body: CreatePaymentDto) {
     return this.paymentsService.createPayment(body.orderId);
   }
 

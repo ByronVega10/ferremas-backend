@@ -4,8 +4,8 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class PaymentsService {
-  private client;
-  private preference;
+  private client: MercadoPagoConfig;
+  private preference: Preference;
 
   constructor(private prisma: PrismaService) {
     this.client = new MercadoPagoConfig({
@@ -23,7 +23,7 @@ export class PaymentsService {
 
     if (!order) {
       throw new NotFoundException('Orden no encontrada');
-    }
+    }0
 
     const response = await this.preference.create({
       body: {
@@ -35,12 +35,15 @@ export class PaymentsService {
           currency_id: 'CLP',
         })),
         back_urls: {
-          success: 'http://localhost:3000/cart?status=success',
-          failure: 'http://localhost:3000/cart?status=failure',
-          pending: 'http://localhost:3000/cart?status=pending',
+          success: `${process.env.FRONTEND_URL}/cart?status=success`,
+          failure: `${process.env.FRONTEND_URL}/cart?status=failure`,
+          pending: `${process.env.FRONTEND_URL}/cart?status=pending`,
         },
         //auto_return: 'approved',
         external_reference: String(order.id),
+
+        notification_url:
+          `${process.env.BACKEND_URL}/payments/webhook`,
       },
     });
 
@@ -49,7 +52,13 @@ export class PaymentsService {
     };
   }
 
+
   async handleWebhook(paymentId: string) {
+    
+    if (!paymentId) {
+      return { received: true };
+    }
+
     // consultar pago directamente desde la API de MercadoPago
     const response = await fetch(
       `https://api.mercadopago.com/v1/payments/${paymentId}`,
@@ -86,6 +95,13 @@ export class PaymentsService {
         });
 
         if (product) {
+          
+          if (product.stock < item.quantity) {
+            throw new NotFoundException(
+              `Stock insuficiente para ${item.productId}`,
+            );
+          }
+          
           await this.prisma.product.update({
             where: { id: item.productId },
             data: {
