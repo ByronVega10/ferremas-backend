@@ -37,6 +37,7 @@ model User {
 
   cart      Cart?
   orders    Order[]
+  @@index([email])
 }
 
 model Category {
@@ -45,6 +46,8 @@ model Category {
   description String?
 
   products    Product[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Product {
@@ -58,17 +61,19 @@ model Product {
   imageUrl    String?
 
   categoryId  Int
-  category    Category  @relation(fields: [categoryId], references: [id])
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   cartItems   CartItem[]
   orderItems  OrderItem[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Cart {
   id       Int        @id @default(autoincrement())
 
   userId   Int        @unique
-  user     User       @relation(fields: [userId], references: [id])
+  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   items    CartItem[]
 }
@@ -80,8 +85,8 @@ model CartItem {
   productId Int
   quantity  Int
 
-  cart      Cart     @relation(fields: [cartId], references: [id])
-  product   Product  @relation(fields: [productId], references: [id])
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model Order {
@@ -91,7 +96,7 @@ model Order {
   createdAt  DateTime     @default(now())
 
   userId     Int
-  user       User         @relation(fields: [userId], references: [id])
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   items      OrderItem[]
 }
@@ -104,6 +109,6 @@ model OrderItem {
   quantity   Int
   price      Float
 
-  order      Order    @relation(fields: [orderId], references: [id])
-  product    Product  @relation(fields: [productId], references: [id])
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
