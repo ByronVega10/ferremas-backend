@@ -26,7 +26,6 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Role } from '@prisma/client';
 
 @ApiTags('Categories')
-@ApiBearerAuth('JWT-auth')
 @Controller('categories')
 export class CategoriesController {
   constructor(
@@ -66,6 +65,7 @@ export class CategoriesController {
     return this.categoriesService.findAll();
   }
 
+  
   @ApiOperation({
     summary: 'Obtener una categoria por ID',
   })
@@ -77,9 +77,11 @@ export class CategoriesController {
     return this.categoriesService.findOne(Number(id));
   }
 
+
   @ApiOperation({
     summary: 'Eliminar una categoria por ID',
   })
+  @ApiBearerAuth('JWT-auth')
   @ApiOkResponse({
     description: 'Categoría eliminada correctamente',
   })

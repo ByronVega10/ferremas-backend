@@ -27,7 +27,6 @@ import { Role } from '@prisma/client';
 
 
 @ApiTags('Products')
-@ApiBearerAuth('JWT-auth')
 @Controller('products')
 export class ProductsController {
   constructor(
@@ -99,6 +98,7 @@ export class ProductsController {
     summary: 'Eliminar un producto por ID',
     description: 'Solo administradores pueden eliminar productos',
   })
+  @ApiBearerAuth('JWT-auth')
   @ApiOkResponse({
     description: 'Producto eliminado correctamente',
   })

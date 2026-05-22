@@ -17,7 +17,7 @@ export class PaymentsController {
     private readonly paymentsService: PaymentsService,
   ) {}
 
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Crear pago desde una orden' })
   @ApiResponse({ status: 201, description: 'Pago creado correctamente' })
   @ApiUnauthorizedResponse({
@@ -28,7 +28,7 @@ export class PaymentsController {
     return this.paymentsService.createPayment(body.orderId);
   }
 
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Manejar webhook de pago' })
   @ApiResponse({ status: 200, description: 'Webhook procesado correctamente' })
   @ApiUnauthorizedResponse({
