@@ -30,7 +30,12 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
 
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+    customSiteTitle: 'FERREMAS API Docs',
+  });
 
   const PORT = process.env.PORT || 3001;
   await app.listen(PORT);
