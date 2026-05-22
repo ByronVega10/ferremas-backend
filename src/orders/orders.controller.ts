@@ -13,6 +13,7 @@ import {
   ApiBearerAuth,
   ApiOkResponse,
   ApiUnauthorizedResponse,
+  ApiParam
 } from '@nestjs/swagger';
 
 import { OrdersService } from './orders.service';
@@ -42,9 +43,18 @@ export class OrdersController {
     return this.ordersService.checkout(req.user.userId);
   }
 
-  @ApiBearerAuth('JWT-auth')
-  @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: 'Obtener mis órdenes' })
+  @ApiBearerAuth('JWT-auth') 
+  @UseGuards(JwtAuthGuard) 
+  @ApiOperation({ 
+    summary: 'Obtener mis órdenes', 
+    description: 'Retorna todas las órdenes realizadas por el usuario autenticado.', 
+  }) 
+  @ApiOkResponse({ 
+    description: 'Órdenes obtenidas correctamente', 
+  }) 
+  @ApiUnauthorizedResponse({ 
+    description: 'Usuario no autenticado', 
+  })
   @Get('my-orders')
   findMyOrders(@Req() req) {
     return this.ordersService.findOrdersByUser(
@@ -52,9 +62,23 @@ export class OrdersController {
     );
   }
 
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('JWT-auth')
-  @ApiOperation({ summary: 'Obtener detalles de mi orden' })
+  @UseGuards(JwtAuthGuard) 
+  @ApiBearerAuth('JWT-auth') 
+  @ApiOperation({ 
+    summary: 'Obtener detalles de una orden', 
+    description: 'Retorna toda la información de una orden específica perteneciente al usuario autenticado.', 
+  }) 
+  @ApiOkResponse({ 
+    description: 'Orden obtenida correctamente', 
+  }) 
+  @ApiUnauthorizedResponse({ 
+    description: 'Usuario no autenticado', 
+  }) 
+  @ApiParam({ 
+    name: 'id', 
+    example: 1, 
+    description: 'ID de la orden', 
+  })
   @Get(':id')
   findOne(
     @Param('id') id: string,
