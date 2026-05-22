@@ -23,7 +23,7 @@ export class PaymentsService {
 
     if (!order) {
       throw new NotFoundException('Orden no encontrada');
-    }0
+    }
 
     const response = await this.preference.create({
       body: {
