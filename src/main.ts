@@ -23,9 +23,35 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('FERREMAS API')
-    .setDescription('Backend API para e-commerce FERREMAS')
-    .setVersion('1.0')
-    .addBearerAuth()
+    .setDescription(
+      `
+    API REST oficial de FERREMAS.
+
+    Esta API permite:
+
+    - Gestión de productos
+    - Gestión de categorías
+    - Autenticación JWT
+    - Carrito de compras
+    - Órdenes de compra
+    - Integración con Mercado Pago
+    - Gestión de usuarios
+
+    Autenticación:
+    La mayoría de endpoints protegidos requieren Bearer Token JWT.
+    `,
+      )
+      .setVersion('1.0.0')
+      .addBearerAuth(
+        {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+          description: 'Ingresa el token JWT',
+          in: 'header',
+        },
+        'JWT-auth',
+      )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

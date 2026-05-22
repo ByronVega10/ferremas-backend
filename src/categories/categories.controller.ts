@@ -26,6 +26,7 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Role } from '@prisma/client';
 
 @ApiTags('Categories')
+@ApiBearerAuth('JWT-auth')
 @Controller('categories')
 export class CategoriesController {
   constructor(
@@ -36,7 +37,7 @@ export class CategoriesController {
     summary: 'Crear nueva categoría',
     description: 'Solo administradores pueden crear categorías',
   })
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT-auth')
   @ApiCreatedResponse({
     description: 'Categoría creada correctamente',
   })

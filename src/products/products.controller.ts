@@ -27,6 +27,7 @@ import { Role } from '@prisma/client';
 
 
 @ApiTags('Products')
+@ApiBearerAuth('JWT-auth')
 @Controller('products')
 export class ProductsController {
   constructor(
@@ -37,7 +38,7 @@ export class ProductsController {
     summary: 'Crear un nuevo producto',
     description: 'Solo administradores pueden crear productos',
   })
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT-auth')
   @ApiCreatedResponse({
     description: 'Producto creado correctamente',
   })
