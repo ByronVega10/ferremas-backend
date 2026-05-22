@@ -14,16 +14,17 @@ import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiUnauthorizedResponse,
-  ApiForbiddenResponse 
+  ApiForbiddenResponse
 } from '@nestjs/swagger';
 
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
-import { UseGuards } from '@nestjs/common';
+import { Patch, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Role } from '@prisma/client';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 
 @ApiTags('Products')
@@ -92,6 +93,34 @@ export class ProductsController {
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(Number(id));
   }
+
+  @ApiBearerAuth('JWT-auth')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(Role.ADMIN)
+
+@ApiOperation({
+  summary: 'Actualizar producto',
+  description: 'Permite editar un producto existente',
+})
+
+@ApiOkResponse({
+  description: 'Producto actualizado correctamente',
+})
+
+@ApiUnauthorizedResponse({
+  description: 'No autorizado',
+})
+
+@Patch(':id')
+update(
+  @Param('id') id: string,
+  @Body() data: UpdateProductDto,
+) {
+  return this.productsService.update(
+    Number(id),
+    data,
+  );
+}
 
 
   @ApiOperation({
