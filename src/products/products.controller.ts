@@ -4,7 +4,8 @@ import {
   Delete,
   Get,
   Param,
-  Post
+  Post,
+  Patch
 } from '@nestjs/common';
 
 import { 
@@ -19,7 +20,7 @@ import {
 
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
-import { Patch, UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -95,32 +96,28 @@ export class ProductsController {
   }
 
   @ApiBearerAuth('JWT-auth')
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(Role.ADMIN)
-
-@ApiOperation({
-  summary: 'Actualizar producto',
-  description: 'Permite editar un producto existente',
-})
-
-@ApiOkResponse({
-  description: 'Producto actualizado correctamente',
-})
-
-@ApiUnauthorizedResponse({
-  description: 'No autorizado',
-})
-
-@Patch(':id')
-update(
-  @Param('id') id: string,
-  @Body() data: UpdateProductDto,
-) {
-  return this.productsService.update(
-    Number(id),
-    data,
-  );
-}
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  @ApiOperation({
+    summary: 'Actualizar producto',
+    description: 'Permite editar un producto existente',
+  })
+  @ApiOkResponse({
+    description: 'Producto actualizado correctamente',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'No autorizado',
+  })
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() data: UpdateProductDto,
+  ) {
+    return this.productsService.update(
+      Number(id),
+      data,
+    );
+  }
 
 
   @ApiOperation({

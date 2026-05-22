@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Patch
 } from '@nestjs/common';
 
 import {
@@ -15,6 +16,7 @@ import {
   ApiOkResponse,
   ApiUnauthorizedResponse,
   ApiForbiddenResponse,
+  ApiNotFoundResponse
 } from '@nestjs/swagger';
 
 import { CategoriesService } from './categories.service';
@@ -24,6 +26,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Role } from '@prisma/client';
+import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @ApiTags('Categories')
 @Controller('categories')
@@ -75,6 +78,34 @@ export class CategoriesController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoriesService.findOne(Number(id));
+  }
+
+
+  @ApiBearerAuth('JWT-auth')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  @ApiOperation({
+    summary: 'Editar categoría',
+    description: 'Permite actualizar datos de una categoría',
+  })
+  @ApiOkResponse({
+    description: 'Categoría actualizada correctamente',
+  })
+  @ApiNotFoundResponse({
+    description: 'Categoría no encontrada',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'No autorizado',
+  })
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() data: UpdateCategoryDto,
+  ) {
+    return this.categoriesService.update(
+      Number(id),
+      data,
+    );
   }
 
 
