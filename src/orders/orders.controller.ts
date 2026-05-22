@@ -7,8 +7,15 @@ import {
   UseGuards
 } from '@nestjs/common';
 
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+
 import { OrdersService } from './orders.service';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Orders')
@@ -18,13 +25,24 @@ export class OrdersController {
     private readonly ordersService: OrdersService,
   ) {}
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: 'Realizar checkout' })
+  @ApiOperation({
+    summary: 'Realizar checkout',
+    description: 'Genera una nueva orden desde el carrito',
+  })
+  @ApiOkResponse({
+    description: 'Orden creada correctamente',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Usuario no autenticado',
+  })
   @Post('checkout')
   checkout(@Req() req) {
     return this.ordersService.checkout(req.user.userId);
   }
 
+  
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Obtener mis órdenes' })
   @Get('my-orders')

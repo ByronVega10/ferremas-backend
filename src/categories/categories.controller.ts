@@ -7,9 +7,18 @@ import {
   Post,
 } from '@nestjs/common';
 
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiUnauthorizedResponse,
+  ApiForbiddenResponse,
+} from '@nestjs/swagger';
+
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -23,7 +32,20 @@ export class CategoriesController {
     private readonly categoriesService: CategoriesService,
   ) {}
 
-  @ApiOperation({ summary: 'Crear una nueva categoria' })
+  @ApiOperation({
+    summary: 'Crear nueva categoría',
+    description: 'Solo administradores pueden crear categorías',
+  })
+  @ApiBearerAuth()
+  @ApiCreatedResponse({
+    description: 'Categoría creada correctamente',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Token inválido',
+  })
+  @ApiForbiddenResponse({
+    description: 'Acceso denegado',
+  })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)  
   @Post()
@@ -31,19 +53,35 @@ export class CategoriesController {
     return this.categoriesService.create(data);
   }
 
-  @ApiOperation({ summary: 'Obtener todas las categorias' })
+
+  @ApiOperation({
+    summary: 'Obtener todas las categorías',
+  })
+  @ApiOkResponse({
+    description: 'Lista categorías obtenida correctamente',
+  })
   @Get()
   findAll() {
     return this.categoriesService.findAll();
   }
 
-  @ApiOperation({ summary: 'Obtener una categoria por ID' })
+  @ApiOperation({
+    summary: 'Obtener una categoria por ID',
+  })
+  @ApiOkResponse({
+    description: 'Categoría obtenida correctamente',
+  })
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoriesService.findOne(Number(id));
   }
 
-  @ApiOperation({ summary: 'Eliminar una categoria por ID' })
+  @ApiOperation({
+    summary: 'Eliminar una categoria por ID',
+  })
+  @ApiOkResponse({
+    description: 'Categoría eliminada correctamente',
+  })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)  
   @Delete(':id')
