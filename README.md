@@ -1,98 +1,481 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🛠️ FERREMAS E-Commerce
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Sistema E-Commerce Full Stack desarrollado para FERREMAS, permitiendo la gestión de productos, categorías, autenticación de usuarios, carrito de compras, órdenes de compra e integración con pasarela de pagos Mercado Pago.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+# 🚀 Demo
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Frontend
 
-## Project setup
+https://ferremas-frontend.vercel.app
 
-```bash
-$ npm install
+### Backend API
+
+https://ferremas-backend-04w4.onrender.com
+
+### Swagger
+
+https://ferremas-backend-04w4.onrender.com/api
+
+---
+
+# 📌 Características principales
+
+El sistema permite:
+
+### Clientes
+
+* Registro de usuarios
+* Inicio de sesión mediante JWT
+* Visualización de productos
+* Filtrado por categorías
+* Visualización de precios en:
+
+  * Pesos Chilenos (CLP)
+  * Dólares Estadounidenses (USD)
+  * Euros (EUR)
+* Carrito de compras
+* Checkout
+* Pago mediante Mercado Pago Sandbox
+* Historial de órdenes
+
+### Administradores
+
+* Gestión de productos
+* Crear productos
+* Editar productos
+* Eliminar productos
+* Gestión de categorías
+* Acceso protegido mediante Roles
+
+---
+
+# 🏗 Arquitectura
+
+El proyecto está desarrollado bajo una arquitectura modular basada en NestJS.
+
+Backend
+
+NestJS
+
+↓
+
+Módulos
+
+↓
+
+Prisma ORM
+
+↓
+
+PostgreSQL (Render)
+
+Frontend
+
+NextJS
+
+↓
+
+Context API
+
+↓
+
+Axios
+
+↓
+
+Backend API
+
+---
+
+# Tecnologías utilizadas
+
+## Backend
+
+NestJS 11
+
+TypeScript
+
+Prisma ORM
+
+PostgreSQL
+
+JWT
+
+Passport
+
+Swagger
+
+Mercado Pago SDK
+
+Class Validator
+
+Axios
+
+---
+
+## Frontend
+
+Next.js 15
+
+React
+
+TailwindCSS
+
+Axios
+
+Context API
+
+JWT Decode
+
+---
+
+## Base de Datos
+
+PostgreSQL
+
+Render Database
+
+---
+
+## Deploy
+
+Frontend
+
+Vercel
+
+Backend
+
+Render
+
+Base de datos
+
+Render PostgreSQL
+
+---
+
+# 📂 Estructura Backend
+
+```text
+src
+
+auth
+cart
+categories
+exchange
+orders
+payments
+products
+users
+prisma
+
+app.module.ts
+main.ts
 ```
 
-## Compile and run the project
+Cada módulo posee:
 
-```bash
-# development
-$ npm run start
+Controller
 
-# watch mode
-$ npm run start:dev
+Service
 
-# production mode
-$ npm run start:prod
+DTO
+
+Module
+
+---
+
+# 🔐 Autenticación
+
+El sistema utiliza:
+
+JWT
+
+Passport
+
+Roles
+
+Roles disponibles:
+
+CUSTOMER
+
+ADMIN
+
+Ejemplo Token:
+
+```json
+{
+"userId":1,
+"email":"admin@test.cl",
+"role":"ADMIN"
+}
 ```
 
-## Run tests
+Endpoints protegidos requieren:
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```text
+Bearer TOKEN
 ```
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+# 🛒 Flujo de Compra
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Usuario inicia sesión
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+↓
+
+Agrega productos
+
+↓
+
+Carrito
+
+↓
+
+Checkout
+
+↓
+
+Se crea Order
+
+↓
+
+Mercado Pago
+
+↓
+
+Webhook
+
+↓
+
+Actualización Stock
+
+↓
+
+Order → PAID
+
+---
+
+# 💳 Integración Mercado Pago
+
+Se utiliza:
+
+MercadoPago SDK v2
+
+Sandbox Environment
+
+Características:
+
+Checkout Pro
+
+Webhook
+
+Notificaciones automáticas
+
+Actualización de stock
+
+---
+
+# 🌎 Conversión de Divisas
+
+FERREMAS permite visualizar precios en:
+
+CLP
+
+USD
+
+EUR
+
+Endpoints:
+
+```http
+GET /exchange/usd
+
+GET /exchange/euro
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Utilidad:
 
-## Resources
+Visualización internacional
 
-Check out a few resources that may come in handy when working with NestJS:
+Comparación de precios
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Experiencia de usuario
 
-## Support
+---
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# 📖 Swagger
 
-## Stay in touch
+Swagger se encuentra disponible en:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```text
+/ api
+```
 
-## License
+Incluye:
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+JWT Authentication
+
+DTO Examples
+
+Request Bodies
+
+Response Examples
+
+Descriptions
+
+Protected Endpoints
+
+---
+
+# 🗄 Base de Datos
+
+ORM:
+
+Prisma
+
+Migraciones:
+
+Prisma Migrate
+
+Seed:
+
+```bash
+npx prisma db seed
+```
+
+Incluye:
+
+3 Categorías
+
+6 Productos
+
+---
+
+# ⚙ Variables de entorno
+
+Backend
+
+```env
+
+DATABASE_URL=
+
+JWT_SECRET=
+
+MERCADOPAGO_ACCESS_TOKEN=
+
+FRONTEND_URL=
+
+BACKEND_URL=
+
+PORT=3001
+
+```
+
+Frontend
+
+```env
+
+NEXT_PUBLIC_API_URL=
+
+```
+
+---
+
+# 🚀 Instalación Local
+
+## Backend
+
+Instalar dependencias
+
+```bash
+npm install
+```
+
+Generar Prisma Client
+
+```bash
+npx prisma generate
+```
+
+Crear tablas
+
+```bash
+npx prisma db push
+```
+
+Poblar Base de Datos
+
+```bash
+npx prisma db seed
+```
+
+Ejecutar proyecto
+
+```bash
+npm run start:dev
+```
+
+Swagger
+
+```text
+http://localhost:3001/api
+```
+
+---
+
+## Frontend
+
+Instalar dependencias
+
+```bash
+npm install
+```
+
+Ejecutar
+
+```bash
+npm run dev
+```
+
+Aplicación
+
+```text
+http://localhost:3000
+```
+
+---
+
+# 📌 Mejoras Futuras
+
+Panel Administrativo
+
+Subida de imágenes a Cloudinary
+
+Descuentos dinámicos
+
+Favoritos
+
+Búsqueda avanzada
+
+Paginación
+
+Dashboard Analytics
+
+Correos transaccionales
+
+Dockerización
+
+CI/CD con GitHub Actions
+
+---
+
+# 👨‍💻 Autor
+
+Byron Vega
+
+Proyecto académico desarrollado para FERREMAS.
+
+2026
