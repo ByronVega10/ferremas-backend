@@ -1,3 +1,16 @@
+/*
+  Descripcion:
+  Esta prueba valida operaciones importantes del carrito,
+  como crear el carrito cuando no existe y calcular subtotales.
+  Se apoya en mocks de Prisma para revisar el comportamiento
+  de lectura y escritura sin usar base de datos real.
+
+  Resultado esperado:
+  Cuando no hay carrito, el servicio debe crearlo y luego agregar el item,
+  y el subtotal debe coincidir con precios y cantidades esperadas.
+  La respuesta final debe conservar el formato que esperan otros módulos.
+*/
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { CartService } from '../../src/cart/cart.service';
 import { PrismaService } from '../../src/prisma/prisma.service';

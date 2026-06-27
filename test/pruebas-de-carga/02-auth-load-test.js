@@ -1,3 +1,16 @@
+/*
+  Descripcion:
+  Esta prueba crea un usuario temporal y luego hace login con carga,
+  para probar un flujo real de acceso sin usar cuentas fijas.
+  El objetivo es comprobar que el endpoint de login funciona estable
+  aunque varias solicitudes lleguen al mismo tiempo.
+
+  Resultado esperado:
+  El endpoint /auth/login debe responder 200 o 201 y devolver access_token
+  en cada iteración durante todo el tiempo que dura la carga.
+  No deberían aparecer respuestas inválidas ni errores de consistencia.
+*/
+
 // Cliente HTTP de k6 para registrar y autenticar usuarios.
 import http from 'k6/http';
 // Helpers de k6 para validar respuestas y pausar entre iteraciones.

@@ -1,3 +1,16 @@
+/*
+  Descripcion:
+  Esta prueba revisa dos partes del flujo de pagos,
+  el webhook aprobado y la creación de preferencia de pago.
+  El foco es confirmar que se actualiza bien el estado de la orden
+  y que se genera la información necesaria para iniciar el cobro.
+
+  Resultado esperado:
+  Con webhook aprobado se debe descontar stock y marcar la orden como PAID,
+  y createPayment debe devolver init_point para redirigir al pago.
+  También se debe mantener correcta la integridad de stock y estado final.
+*/
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { PaymentsService } from '../../src/payments/payments.service';
 import { PrismaService } from '../../src/prisma/prisma.service';

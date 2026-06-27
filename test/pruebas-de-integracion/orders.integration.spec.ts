@@ -1,3 +1,16 @@
+/*
+  Descripcion:
+  Esta prueba cubre el checkout de órdenes y la consulta de una orden,
+  usando un usuario autenticado para seguir reglas reales del flujo.
+  También revisa que se respete el permiso por usuario
+  y que el resultado tenga datos consistentes.
+
+  Resultado esperado:
+  Checkout debe devolver orderId y total correctos al crear la orden,
+  y findOne solo debe retornar la orden si pertenece al usuario autenticado.
+  En resumen, cada consulta debe respetar el aislamiento por usuario.
+*/
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { OrdersService } from '../../src/orders/orders.service';
 import { PrismaService } from '../../src/prisma/prisma.service';

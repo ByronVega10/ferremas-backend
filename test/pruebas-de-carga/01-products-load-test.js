@@ -1,3 +1,16 @@
+/*
+  Descripcion:
+  Esta prueba manda muchas consultas seguidas al endpoint de productos,
+  como si varias personas estuvieran mirando el catálogo al mismo tiempo.
+  La idea es revisar si el servicio sigue respondiendo bien cuando hay
+  bastante movimiento y varias peticiones llegan juntas.
+
+  Resultado esperado:
+  El endpoint /products debe responder status 200 en todas las vueltas,
+  sin errores HTTP y sin fallos en las validaciones de la prueba.
+  También se espera que el porcentaje de requests fallidas sea 0%.
+*/
+
 // Cliente HTTP de k6 para llamar a la API.
 import http from 'k6/http';
 // Helpers de k6 para validar respuestas y pausar entre iteraciones.
