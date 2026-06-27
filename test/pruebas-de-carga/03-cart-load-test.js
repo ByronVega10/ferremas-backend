@@ -1,3 +1,16 @@
+/*
+  Descripcion:
+  Esta prueba crea un usuario temporal, busca un producto real del catálogo
+  y lo agrega al carrito para simular una acción común de compra.
+  Se usa carga concurrente para ver si el módulo de carrito aguanta bien
+  cuando varias operaciones de agregado ocurren al mismo tiempo.
+
+  Resultado esperado:
+  El endpoint /cart/add debe responder 200 o 201 y devolver el id del item,
+  mostrando que el producto se agregó correctamente al carrito.
+  El servicio debe mantener la misma estructura de respuesta en todas las vueltas.
+*/
+
 // Cliente HTTP de k6 para agregar productos al carrito.
 import http from 'k6/http';
 // Helpers de k6 para validar respuestas y pausar entre iteraciones.

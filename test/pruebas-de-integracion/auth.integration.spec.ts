@@ -1,3 +1,16 @@
+/*
+  Descripcion:
+  Esta prueba revisa los flujos principales de autenticación,
+  como registrar usuarios y hacer login dentro del servicio.
+  Se usan mocks de Prisma y JWT para evaluar la lógica sin depender
+  de conexiones externas ni de una base real.
+
+  Resultado esperado:
+  Register debe crear el usuario junto con su carrito asociado,
+  y login debe validar credenciales y devolver un access token.
+  Además, las dependencias mockeadas deben llamarse con datos correctos.
+*/
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';

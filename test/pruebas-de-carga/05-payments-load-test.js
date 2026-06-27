@@ -1,3 +1,16 @@
+/*
+  Descripcion:
+  Esta prueba simula notificaciones hacia el webhook de pagos con carga,
+  para revisar que el endpoint esté disponible y responda de forma estable.
+  También ayuda a comprobar que el backend no se quede bloqueado
+  cuando recibe varias notificaciones en poco tiempo.
+
+  Resultado esperado:
+  El endpoint /payments/webhook debe responder 200 o 201 y devolver received=true,
+  confirmando que la notificación fue recibida correctamente.
+  La respuesta debe mantener el mismo formato en todas las iteraciones.
+*/
+
 // Cliente HTTP de k6 para simular la recepción de notificaciones de pago.
 import http from 'k6/http';
 // Helpers de k6 para validar respuestas y pausar entre iteraciones.

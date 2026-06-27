@@ -1,3 +1,16 @@
+/*
+  Descripcion:
+  Esta prueba prepara un usuario con sesión iniciada y carrito con productos,
+  y después ejecuta el checkout para completar el flujo de compra.
+  Busca validar la parte más importante del proceso, que es crear la orden
+  cuando el cliente ya decidió finalizar su compra.
+
+  Resultado esperado:
+  El endpoint /orders/checkout debe responder 200 o 201 y devolver orderId,
+  sin errores de autorización ni problemas en la creación de la orden.
+  Cada iteración debe terminar con una orden válida registrada por el backend.
+*/
+
 // Cliente HTTP de k6 para crear órdenes mediante checkout.
 import http from 'k6/http';
 // Helpers de k6 para validar respuestas y pausar entre iteraciones.

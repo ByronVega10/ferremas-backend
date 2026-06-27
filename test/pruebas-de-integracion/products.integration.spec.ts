@@ -1,3 +1,16 @@
+/*
+  Descripcion:
+  Esta prueba revisa consultas principales del catálogo de productos,
+  usando mocks de Prisma para no depender de una base real.
+  Se asegura de que la categoría venga incluida,
+  porque es información que el frontend usa de forma frecuente.
+
+  Resultado esperado:
+  findAll debe retornar productos con categoría,
+  y findOne debe retornar un producto por id también con categoría.
+  La estructura de datos debe mantenerse para evitar fallas en vistas del catálogo.
+*/
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProductsService } from '../../src/products/products.service';
 import { PrismaService } from '../../src/prisma/prisma.service';
